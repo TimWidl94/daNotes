@@ -28,6 +28,7 @@ export class NoteListService {
   constructor() {
     this.unsubNotes = this.subNotesList();
     this.unsubTrash = this.subTrashList();
+
   }
 
   // const itemCollection = collection(this.firestore, 'items');
@@ -45,6 +46,14 @@ export class NoteListService {
           console.log(err);
         })
         .then(() => {});
+    }
+  }
+
+  getcolIdFromNote(note: Note):string {
+    if (note.type == 'note') {
+      return 'notes';
+    } else {
+      return 'trash';
     }
   }
 
@@ -108,13 +117,7 @@ export class NoteListService {
       });
   }
 
-  getcolIdFromNote(note: Note) {
-    if (note.type == 'note') {
-      return 'notes';
-    } else {
-      return 'trash';
-    }
-  }
+
 
   async deleteNote(colId: "notes" | "trash", docId: string){
     await deleteDoc(this.getSingleDocRef(colId, docId)).catch((err) => {
