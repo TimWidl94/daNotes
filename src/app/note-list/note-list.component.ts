@@ -1,6 +1,8 @@
+
 import { Component } from '@angular/core';
 import { Note } from '../interfaces/note.interface';
 import { NoteListService } from '../firebase-services/note-list.service';
+import { AddNoteDialogComponent } from './../add-note-dialog/add-note-dialog.component';
 
 @Component({
   selector: 'app-note-list',
@@ -18,7 +20,6 @@ export class NoteListComponent {
   constructor(private noteService: NoteListService) {}
 
   getList() {
-    console.log(this.noteService.normalNotes);
     if (this.status == 'notes') {
       if(this.favFilter == "all"){
       return this.noteService.normalNotes;}

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Component } from '@angular/core';
 import { Note } from '../interfaces/note.interface';
 import {
   Firestore,
@@ -82,9 +82,7 @@ export class NoteListService {
   }
 
   subNotesList() {
-    let ref = collection(this.firestore, "notes/3SV4zIf5BVXCS4gFkZCa/notesExtra");
-
-    const q = query(ref, limit(100));
+    const q = query(this.getNotesRef(), limit(100));
     return onSnapshot(q, (list) => {
       this.normalNotes = [];
       list.forEach((element) => {
@@ -129,16 +127,21 @@ export class NoteListService {
   }
 
   async addNote(item: Note, colId: 'notes' | 'trash') {
-    await addDoc(this.getNotesRef(), item)
-      .catch((err) => {
-        console.error(err);
-      })
-      .then((docRef) => {
-        console.log('Document written with ID: ', docRef);
-      });
+    if (colId == 'notes') {
+      await addDoc(this.getNotesRef(), item)
+        .catch((err) => {
+          console.error(err);
+        })
+        .then((docRef) => {
+          console.log('Document written with ID: ', docRef);
+        });
+    } else {
+      await addDoc(this.getTrashRef(), item);
+    }
   }
 
   async deleteNote(colId: 'notes' | 'trash', docId: string) {
+    console.log(this.getSingleDocRef(colId, docId));
     await deleteDoc(this.getSingleDocRef(colId, docId)).catch((err) => {
       console.log(err);
     });

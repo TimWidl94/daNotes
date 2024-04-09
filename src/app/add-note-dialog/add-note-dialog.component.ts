@@ -29,7 +29,7 @@ export class AddNoteDialogComponent {
       content : this.description,
       marked: false,
     }
-    if(note.type = "note"){
+    if(note.type == "note"){
     this.noteService.addNote(note, "notes")}
     else{this.noteService.addNote(note, "trash")}
     this.closeDialog();
